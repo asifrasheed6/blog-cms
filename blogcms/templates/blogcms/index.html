@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Expressions</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'blogcms/style.css' %}">
+</head>
+<body>
+    <header class="nav">
+            <ul class="nav-item">
+                <li class="nav-button">
+                    <a href="{% url 'cms:index'%}">Expressions</a>
+                </li>
+                {% for post in post_list %}
+                    {% if post.menu_item != -1 %}
+                        <li class="nav-button">
+                            <a href="{% url 'cms:post' post.id %}">{{ post.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    </header>
+    {% if not post_list %}
+        <div class="warning">
+            <img src="{%  static 'blogcms/img/nopost.png' %}">
+            </br>No Posts
+        </div>
+    {% else %}
+        <h2>Featured</h2>
+        <div class="post-list">
+            {% for post in post_list %}
+                {% if post.status and post.featured %}
+                    <div class="list-item">
+                        {% for image in post.image_set.all %}
+                            {%  if image.cover %}
+                                <div class="cover">
+                                    <img src='{{ image.img.url }}'>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <a href="{% url 'cms:post' post.id %}">
+                            <div class="post">
+                                <p class="title">{{ post.title }}</p>
+                                <p class="excerpt">{{ post.excerpt }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <h2>Latest</h2>
+        <div class="post-list">
+            {% for post in post_list %}
+                {% if post.status %}
+                    <div class="list-item">
+                        {% for image in post.image_set.all %}
+                            {%  if image.cover %}
+                                <div class="cover">
+                                    <img src='{{ image.img.url }}'>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <a href="{% url 'cms:post' post.id %}">
+                            <div class="post">
+                                <p class="title">{{ post.title }}</p>
+                                <p class="excerpt">{{ post.excerpt }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <footer>
+        <hr>
+        &copy; {% now 'Y' %} Expressions
+    </footer>
+</body>
+</html>
