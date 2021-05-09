@@ -17,15 +17,15 @@ class Post(models.Model):
     menu_item = models.IntegerField(default=-1) # Position of post on the website menu (-1 means not in menu)
     status = models.BooleanField(default=False) # Whether the post is published or not
     featured = models.BooleanField(default=False) # Whether the post is featured or not
+    page = models.BooleanField(default=False) # Whether the post is a page or not
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField() # when the post was last modified
     published_on = models.DateTimeField() # when the post was published
 
     def __str__(self):
-        return '{} by {}\n{}\nCategory: {}\nPublished on {}\nLast Modified on {}'.format(
+        return '{} by {}\n{}\nCategory: {}\nPublished on {}'.format(
             str(self.title), str(self.author), str(self.excerpt), str(self.category),
-            str(self.published_on), str(self.timestamp)
+            str(self.published_on)
         )
 
 # Comments associated to a post if deleted if the post is deleted or the user associated with the comment is deleted
@@ -57,3 +57,4 @@ class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     cover = models.BooleanField(default=False)
     img = models.ImageField(upload_to='uploads/', null=False)
+    caption = models.CharField(max_length=100, blank=True, default='')

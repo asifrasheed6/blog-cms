@@ -21,7 +21,47 @@
                 {% endfor %}
             </ul>
     </header>
-
+    <div class="title-cover">
+        {% for img in post.image_set.all %}
+            {% if img.cover %}
+                <img src="{{ img.img.url }}">
+            {% endif %}
+        {% endfor %}
+        <div class="text">
+            <h1>{{ post.title }}</h1>
+            <h2>{{ post.excerpt }}</h2>
+        </div>
+    </div>
+    {% if post.page %}
+        <div style="text-align: justify">
+            {{ post.content|linebreaks }}
+        </div>
+    {% else %}
+        <div class="post-container">
+            <div class="post-author">
+                <div>
+                    <a href="{% url 'cms:profile' post.author.id %}">By
+                        {% if not post.author.first_name %}
+                            {{ post.author }}
+                        {% else %}
+                            {{ post.author.first_name }} {{ post.author.last_name }}
+                        {% endif %}
+                    </a>
+                </div>
+                <div>
+                    {{ post.published_on | date:'d M, Y' }}
+                </div>
+                <div>
+                    <a href="#">
+                        {{ post.category }}
+                    </a>
+                </div>
+            </div>
+            <div class="post-body">
+                {{ post.content|linebreaks }}
+            </div>
+        </div>
+    {% endif %}
     <footer>
         <hr>
         &copy; {% now 'Y' %} Expressions

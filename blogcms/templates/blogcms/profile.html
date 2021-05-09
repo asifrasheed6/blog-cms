@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if not user.first_name %}
+                {{ user.username }}
+            {% else %}
+                {{ user.first_name }} {{ user.last_name }}
+            {% endif %}- Expressions</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'blogcms/style.css' %}">
+</head>
+<body>
+    <header class="nav">
+            <ul class="nav-item">
+                <li class="nav-button">
+                    <a href="{% url 'cms:index'%}">Expressions</a>
+                </li>
+                {% for post in post_list %}
+                    {% if post.menu_item != -1 %}
+                        <li class="nav-button">
+                            <a href="{% url 'cms:post' post.id %}">{{ post.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    </header>
+
+    <footer>
+        <hr>
+        &copy; {% now 'Y' %} Expressions
+    </footer>
+</body>
+</html>

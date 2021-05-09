@@ -21,7 +21,7 @@
 .post-list{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 300px 400px;
+    grid-auto-rows: 300px 300px;
     grid-gap: 5px;
     overflow: hidden;
 }
@@ -115,4 +115,57 @@
   footer{
       color: gray;
       font-size: 0.8rem;
+  }
+
+  .title-cover{
+      position: relative;
+      color: white;
+      text-shadow: 2px 2px 5px #3d3d3d;
+      min-height: 300px;
+  }
+
+  .title-cover *{
+      background-color: #00000000;
+  }
+
+  .title-cover img{
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      object-position: 0 0;
+  }
+
+  .title-cover .text{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+  }
+
+  .post-container{
+      width: 100%;
+      min-height: 100px;
+  }
+
+  .post-body{
+      text-align: justify;
+      margin: 10px;
+      width: 85%;
+  }
+
+  .post-author{
+      /*max-width: 10%;*/
+      float: right;
+      margin-right: 10px;
+  }
+
+  a:hover{
+      text-decoration: underline;
+  }
+
+  .post-author *{
+      margin-bottom: 3px;
+      text-decoration: none;
+      color: gray;
   }
