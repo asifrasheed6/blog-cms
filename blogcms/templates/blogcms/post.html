@@ -61,6 +61,39 @@
                 {{ post.content|linebreaks }}
             </div>
         </div>
+        <h2 style="border-bottom: 1px solid gray; padding-bottom: 5px">{{ post.comment_set.count }} Comments</h2>
+        <div style="width: 100%; overflow: hidden" id="comments">
+            {% for comment in post.comment_set.all %}
+                <div class="comment-container">
+                    <div class="comment-user">
+                        {% if not comment.author.userimage_set.all %}
+                            <img src="/media/uploads/user_default.png">
+                        {% else %}
+                            {% for userimage in comment.author.userimage_set.all %}
+                                <img src="{{ userimage.img.url }}">
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="comment-body">
+                        {% if not comment.author.first_name %}
+                            <a href="{% url 'cms:profile' comment.author.id %}"><div class="user-name">{{ comment.author.username }}</div></a>
+                        {% else %}
+                            <a href="{% url 'cms:profile' comment.author.id %}"><div class="user-name">{{ comment.author.first_name }} {{ comment.author.last_name }}</div></a>
+                        {% endif %}
+                        <div class="timestamp">{{ comment.comment_date }}</div>
+                        <div class="comment">{{ comment.comment_content }}</div>
+                    </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'cms:comment' %}" class="comment-form">
+                {% csrf_token %}
+                <input type="text" placeholder="Leave a Comment" name="comment_content">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <input type="submit" value="Comment">
+            </form>
+        {% endif %}
     {% endif %}
     <footer>
         <hr>

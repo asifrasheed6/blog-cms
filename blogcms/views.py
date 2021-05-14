@@ -1,8 +1,10 @@
 from django.views import generic
-from blogcms.models import Post
+from blogcms.models import Post, Comment
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from datetime import datetime
 
-# Create your views here.
 class Index(generic.ListView):
     template_name = 'blogcms/index.html'
     context_object_name = 'post_list'
@@ -39,3 +41,13 @@ class Profile(generic.DetailView):
             }
         )
         return context
+
+def addComment(request):
+    if request.user.is_authenticated and request.POST:
+        if request.POST['comment_content'] != '':
+            comment = Comment(post=Post.objects.all().filter(pk=int(request.POST['post_id'])).first(),
+                          author=request.user, comment_date=datetime.now(),
+                          comment_content=request.POST['comment_content'])
+            comment.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER']+"#comments")
+    return HttpResponseRedirect(reverse('cms:index'))

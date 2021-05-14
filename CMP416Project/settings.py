@@ -123,3 +123,5 @@ STATIC_URL = '/static/'
 parent_dir = os.path.abspath(os.path.dirname(__file__)+'/..')
 MEDIA_ROOT = os.path.join(parent_dir, 'media/')
 MEDIA_URL = '/media/'
+
+LOGIN_URL = '/admin/'

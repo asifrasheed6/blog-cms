@@ -155,7 +155,6 @@
   }
 
   .post-author{
-      /*max-width: 10%;*/
       float: right;
       margin-right: 10px;
   }
@@ -168,4 +167,93 @@
       margin-bottom: 3px;
       text-decoration: none;
       color: gray;
+  }
+
+  .user-info{
+      width: 100%;
+      text-align: center;
+  }
+
+  .user-info *{
+      margin: 10px;
+  }
+
+  .user-info img{
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      border-radius: 50%;
+      width: 10%;
+      object-fit: cover;
+  }
+
+.comment-container{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #afafaf;
+    margin-bottom: 20px;
+    padding: 0 20px 20px;
+}
+.comment-container:last-child{
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+  .comment-container a{
+      text-decoration: none;
+      color: black;
+  }
+  .comment-user{
+      width: 7%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-right: 5px;
+      box-sizing: border-box;
+  }
+  .comment-container img{
+      width: 100%;
+      border-radius: 50%;
+      border: 1px black solid;
+      margin-bottom: 20px;
+  }
+  .comment-container .comment-body{
+      width: 92%;
+      padding: 0 20px;
+      box-sizing: border-box;
+  }
+  .comment-body .timestamp{
+      margin-bottom: 20px;
+      color: #1a1a1a;
+  }
+  .comment-body .user-name{
+      font-weight: bold;
+      margin-bottom: 20px;
+  }
+  .comment-body .user-name:hover{
+      cursor: pointer;
+      text-decoration: underline;
+  }
+  .comment-form{
+      margin: 10px;
+  }
+  .comment-form input{
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #afafaf;
+      border-radius: 5px;
+  }
+  .comment-form input[type='text']{
+      width: 20%;
+  }
+  .comment-form input[type='submit']{
+      color: #afafaf;
+      transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  }
+  .comment-form input[type='submit']:hover{
+      cursor: pointer;
+      background-color: #afafaf;
+      color: white;
   }

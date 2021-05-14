@@ -25,7 +25,16 @@
                 {% endfor %}
             </ul>
     </header>
-
+    <div class="user-info">
+        {% if not user.userimage_set.all %}
+            <img src="/media/uploads/user_default.png">
+        {% else %}
+            {% for userimage in user.userimage_set.all %}
+                <img src="{{ userimage.img.url }}">
+            {% endfor %}
+        {% endif %}
+        <div class="name"><strong>{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</strong></div>
+    </div>
     <footer>
         <hr>
         &copy; {% now 'Y' %} Expressions

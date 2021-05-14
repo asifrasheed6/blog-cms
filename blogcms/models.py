@@ -58,3 +58,8 @@ class Image(models.Model):
     cover = models.BooleanField(default=False)
     img = models.ImageField(upload_to='uploads/', null=False)
     caption = models.CharField(max_length=100, blank=True, default='')
+
+class UserImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    constraints = [models.UniqueConstraint(fields=['user'], name='userimage')]
+    img = models.ImageField(upload_to='uploads/', null=True)
