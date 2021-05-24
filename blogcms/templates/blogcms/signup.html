@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - Expressions</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'blogcms/style.css' %}">
+    <script type="application/javascript">
+        function validateForm(){
+            if(document.forms['signup']['username'].value == ''){
+                alert("Username cannot be empty")
+                return false
+            }
+            if(document.forms['signup']['password'].value != document.forms['signup']['c_password'].value){
+                alert("Passwords Do Not Match")
+                return false
+            }
+            return true
+        }
+    </script>
+</head>
+<body>
+    <header class="nav">
+            <ul class="nav-item">
+                <li class="nav-button">
+                    <a href="{% url 'cms:index'%}">Expressions</a>
+                </li>
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-button">
+                        <a href="{% url 'cms:signup' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-button">
+                        <a href="/accounts/login/?next=/">Login</a>
+                    </li>
+                {% else %}
+                    <li class="nav-button">
+                        <a href="/accounts/logout/?next=/">Logout</a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-button">
+                            <a href="/accounts/">Admin</a>
+                        </li>
+                        <li class="nav-button">
+                            <a href="/accounts/">Stats</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                {% for post in post_list %}
+                    {% if post.menu_item != -1 %}
+                        <li class="nav-button">
+                            <a href="{% url 'cms:post' post.id %}">{{ post.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    </header>
+    {% if not request.user.is_authenticated %}
+        <form name="signup" class="comment-form" onsubmit="return validateForm()" action="{% url 'cms:register' %}" method="post">
+            {% csrf_token %}
+            <input class="comment_content" placeholder="First Name" type="text" name="first_name">
+            <input class="comment_content" placeholder="Last Name" type="text" name="last_name"><br>
+            <input class="comment_content" placeholder="User Name" type="text" name="username">
+            <input class="comment_content" placeholder="Email Address" type="email" name="email"><br>
+            <input class="comment_content" placeholder="Password" type="password" name="password">
+            <input class="comment_content" placeholder="Confirm Password" type="password" name="c_password"><br>
+            <input type="submit" value="Sign Up">
+        </form>
+    {% endif %}
+    <footer>
+        <hr>
+        &copy; {% now 'Y' %} Expressions
+    </footer>
+</body>
+</html>

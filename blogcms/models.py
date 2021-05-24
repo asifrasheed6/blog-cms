@@ -49,9 +49,8 @@ class View(models.Model):
     timestamp = models.DateTimeField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-class Embed(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    value = models.TextField()
+    def __str__(self):
+        return '{} visited {} on {}'.format(self.ipaddress, self.post, self.timestamp)
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

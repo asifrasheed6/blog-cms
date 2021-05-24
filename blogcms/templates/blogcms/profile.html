@@ -6,7 +6,7 @@
                 {{ user.username }}
             {% else %}
                 {{ user.first_name }} {{ user.last_name }}
-            {% endif %}- Expressions</title>
+            {% endif %} - Expressions</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'blogcms/style.css' %}">
 </head>
@@ -16,6 +16,26 @@
                 <li class="nav-button">
                     <a href="{% url 'cms:index'%}">Expressions</a>
                 </li>
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-button">
+                        <a href="{% url 'cms:signup' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-button">
+                        <a href="/accounts/login/?next=/">Login</a>
+                    </li>
+                {% else %}
+                    <li class="nav-button">
+                        <a href="/accounts/logout/?next=/">Logout</a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-button">
+                            <a href="/accounts/">Admin</a>
+                        </li>
+                        <li class="nav-button">
+                            <a href="/accounts/">Stats</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
                 {% for post in post_list %}
                     {% if post.menu_item != -1 %}
                         <li class="nav-button">
@@ -34,6 +54,68 @@
             {% endfor %}
         {% endif %}
         <div class="name"><strong>{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</strong></div>
+    </div>
+    <h1>Posts by {% if not user.first_name %}
+                {{ user.username }}
+            {% else %}
+                {{ user.first_name }} {{ user.last_name }}
+            {% endif %}</h1>
+    {% if not user.post_set.all %}
+        <div class="warning">
+            <img src="{%  static 'blogcms/img/nopost.png' %}">
+            </br>No Posts
+        </div>
+    {% else %}
+        <div class="post-list">
+            {% for post in user.post_set.all %}
+                {% if post.status %}
+                    <div class="list-item">
+                        {% for image in post.image_set.all %}
+                            {%  if image.cover %}
+                                <div class="cover">
+                                    <img src='{{ image.img.url }}'>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <a href="{% url 'cms:post' post.id %}">
+                            <div class="post">
+                                <p class="title">{{ post.title }}</p>
+                                <p class="excerpt">{{ post.excerpt }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <h1>Comments by {% if not user.first_name %}
+                {{ user.username }}
+            {% else %}
+                {{ user.first_name }} {{ user.last_name }}
+            {% endif %}</h1>
+    <div style="width: 100%; overflow: hidden" id="comments">
+        {% for comment in user.comment_set.all %}
+            <div class="comment-container">
+                <div class="comment-user">
+                    {% if not comment.author.userimage_set.all %}
+                        <img src="/media/uploads/user_default.png">
+                    {% else %}
+                        {% for userimage in comment.author.userimage_set.all %}
+                            <img src="{{ userimage.img.url }}">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="comment-body">
+                    {% if not comment.author.first_name %}
+                        <a href="{% url 'cms:profile' comment.author.id %}"><div class="user-name">{{ comment.author.username }}</div></a>
+                    {% else %}
+                        <a href="{% url 'cms:profile' comment.author.id %}"><div class="user-name">{{ comment.author.first_name }} {{ comment.author.last_name }}</div></a>
+                    {% endif %}
+                    <div class="timestamp">{{ comment.comment_date }} on <a href="{% url 'cms:post' comment.post.id %}">{{ comment.post.title }}</a> </div>
+                    <div class="comment">{{ comment.comment_content }}</div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
     <footer>
         <hr>

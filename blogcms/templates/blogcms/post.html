@@ -12,6 +12,26 @@
                 <li class="nav-button">
                     <a href="{% url 'cms:index'%}">Expressions</a>
                 </li>
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-button">
+                        <a href="{% url 'cms:signup' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-button">
+                        <a href="/accounts/login/?next=/">Login</a>
+                    </li>
+                {% else %}
+                    <li class="nav-button">
+                        <a href="/accounts/logout/?next=/">Logout</a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-button">
+                            <a href="/accounts/">Admin</a>
+                        </li>
+                        <li class="nav-button">
+                            <a href="/accounts/">Stats</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
                 {% for post in post_list %}
                     {% if post.menu_item != -1 %}
                         <li class="nav-button">
@@ -52,7 +72,7 @@
                     {{ post.published_on | date:'d M, Y' }}
                 </div>
                 <div>
-                    <a href="#">
+                    <a href="{% url 'cms:category' post.category.id %}">
                         {{ post.category }}
                     </a>
                 </div>
@@ -61,7 +81,7 @@
                 {{ post.content|linebreaks }}
             </div>
         </div>
-        <h2 style="border-bottom: 1px solid gray; padding-bottom: 5px">{{ post.comment_set.count }} Comments</h2>
+        <h2 style="border-bottom: 1px solid gray; padding-bottom: 5px">{{ post.comment_set.count }} Comment{% if post.comment_set.count > 1 %}s{% endif %}</h2>
         <div style="width: 100%; overflow: hidden" id="comments">
             {% for comment in post.comment_set.all %}
                 <div class="comment-container">

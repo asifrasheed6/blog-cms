@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home - Expressions</title>
+    <title>{{ category.name }} Posts - Expressions</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'blogcms/style.css' %}">
 </head>
@@ -28,7 +28,7 @@
                             <a href="/accounts/">Admin</a>
                         </li>
                         <li class="nav-button">
-                            <a href="/stats/">Stats</a>
+                            <a href="/accounts/">Stats</a>
                         </li>
                     {% endif %}
                 {% endif %}
@@ -41,38 +41,15 @@
                 {% endfor %}
             </ul>
     </header>
-    {% if not post_list %}
+    <h2>{{ category.name }} Posts</h2>
+    {% if not category.post_set.all %}
         <div class="warning">
             <img src="{%  static 'blogcms/img/nopost.png' %}">
             </br>No Posts
         </div>
     {% else %}
-        <h2>Featured</h2>
         <div class="post-list">
-            {% for post in post_list %}
-                {% if post.status and post.featured %}
-                    <div class="list-item">
-                        {% for image in post.image_set.all %}
-                            {%  if image.cover %}
-                                <div class="cover">
-                                    <img src='{{ image.img.url }}'>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <a href="{% url 'cms:post' post.id %}">
-                            <div class="post">
-                                <p class="title">{{ post.title }}</p>
-                                <p class="excerpt">{{ post.excerpt }}</p>
-                            </div>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <h2>Latest</h2>
-        <div class="post-list">
-            {% for post in post_list %}
+            {% for post in category.post_set.all %}
                 {% if post.status %}
                     <div class="list-item">
                         {% for image in post.image_set.all %}
@@ -93,6 +70,7 @@
             {% endfor %}
         </div>
     {% endif %}
+
     <footer>
         <hr>
         &copy; {% now 'Y' %} Expressions
